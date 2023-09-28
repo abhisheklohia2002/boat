@@ -22,7 +22,7 @@ export default function SignIn() {
         seterrorMessage(null)
 
 //sign up 
-const https_post = await fetch("http://localhost:5000/api/register", {
+const https_post = await fetch("https://boat-lilac.vercel.app/api/register", {
   method: "POST",
   headers: {
     "Content-Type": "application/json", // Corrected header name
@@ -41,7 +41,7 @@ seterrorMessage(res.msg)
       }
       else{
         seterrorMessage(null)
-        const https_post = await fetch("http://localhost:5000/api/login", {
+        const https_post = await fetch("https://boat-lilac.vercel.app/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json", // Corrected header name
