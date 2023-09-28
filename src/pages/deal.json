@@ -1,0 +1,85 @@
+{
+    "cables":[
+        {
+            "qty":1,
+
+           
+            "id":10,
+            "name":"Type C A600",
+            "price":599,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/main_0e842e22-c68e-49dc-a88f-da2e28be72a5_300x.png?v=1633088063"
+        },
+        {
+            "qty":1,
+
+           
+
+            "id":11,
+            "name":"Micro USB 550"
+            ,"price":129,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/main_0e842e22-c68e-49dc-a88f-da2e28be72a5_300x.png?v=1633088063"
+          
+        },
+        {
+            "qty":1,
+
+            "id":12,
+            "name":"LTG 800 Cables",
+        "price":899,
+        "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/main_1_796f426d-e05c-4093-a95e-63b99f5a7805_300x.png?v=1634209698"
+
+
+        }
+    ],
+    "watch":[
+        {
+            "qty":1,
+
+            "id":13,
+            "name":"Wave Style Call",
+            "price":1099,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/black_320d7c10-5bdf-435b-a0e5-5f19aaeb8de2_300x.png?v=1673616471"
+        },
+        {
+            "qty":1,
+
+            "id":14,
+            "name":"Wave Flex Connect",
+            "price":1499,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Wave_Flex_Connect.jpg?v=1689751649"
+        },
+        {
+            "qty":1,
+
+            "id":15,
+            "name":"Storm Call",
+            "price":1399,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Storm_Call.jpg?v=1682408982"
+        },
+        {
+            "qty":1,
+
+            "id":16,
+            "name":"Wave Lite",
+            "price":1899,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Wave-Lite.jpg?v=1682408982"
+        },
+        {
+            "qty":1,
+
+            "id":17,
+            "name":"Wave Call",
+            "price":1799,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Wave_Call__1.jpg?v=1689751649"
+        },
+        {
+            "qty":1,
+
+            "id":18,
+            "name":"Wave Leap Call",
+            "price":1499,
+            "poster":"https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Wave-Leap-Call.jpg?v=1682408982"
+        }
+        
+    ]
+}

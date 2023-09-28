@@ -1,0 +1,27 @@
+/* HorizontalScrollContainer.css */
+
+.horizontal-scroll-container {
+    display: flex;
+    padding-left: 5rem;
+    justify-content: space-evenly;
+    overflow-x: scroll; 
+    white-space: nowrap; 
+    max-width: 100%; 
+    -webkit-overflow-scrolling: touch; 
+  }
+  
+  /* Hide the scrollbar for WebKit-based browsers */
+  .horizontal-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide the scrollbar for Firefox */
+  .horizontal-scroll-container {
+    scrollbar-width: none;
+  }
+  
+  /* Optional: Style the container's content, if needed */
+  .horizontal-scroll-container > * {
+    /* Add your styling here */
+  }
+  

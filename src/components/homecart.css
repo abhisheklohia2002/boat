@@ -1,0 +1,29 @@
+.span_hour{
+    justify-content: center!important;
+    max-width: 70%!important;
+    border: 1px solid white;
+    bottom: -12px;
+    top: unset;
+    left: 15%;
+    z-index: 1;
+    border-radius: 10px!important;
+    padding: 6px 10px!important;
+    font-size: 12px;
+    font-weight: 700;
+    background: #fcc50b;
+    color: #000;
+    letter-spacing: -0.48px;
+    position: relative;
+    bottom: 1rem;
+    left: 0.1rem;
+}
+.main_home_cart{
+    border: 2px solid black;
+    width: 25%;
+    text-align: center;
+    position: relative;
+    padding: 1rem;
+    border-radius: 1rem;
+    border-color: lightgray;
+    background-color: #FAFAFA;
+}
