@@ -1,36 +1,70 @@
 import React, { useRef,useState } from 'react'
 import { Header } from '../components/Header'
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
 
     const email = useRef(null);
     const password = useRef(null);
+    const name = useRef(null);
+    const nav = useNavigate()
     const [errorMessage,seterrorMessage] = useState(null)
       const [isSignInForm, setisSignInForm] = useState(true);
       const ToggleSignForm = () => {
         setisSignInForm(!isSignInForm);
       };
-    
-    const HandleButtonClick = (event)=>{
-    event.preventDefault()
+      const HandleButtonClick = async(event)=>{
+        event.preventDefault();
+        console.log(name,email.current.value)
+
+    try {
+      if(false == isSignInForm){
+        seterrorMessage(null)
+
+//sign up 
+const https_post = await fetch("http://localhost:5000/api/register", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json", // Corrected header name
+  },
+  body: JSON.stringify({
+    name: name.current.value,
+    email: email.current.value,
+    password: password.current.value,
+  }),
+});
+
+const res = await https_post.json();
+console.log(res)
+seterrorMessage(res.msg)
+
+      }
+      else{
+        seterrorMessage(null)
+        const https_post = await fetch("http://localhost:5000/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Corrected header name
+          },
+          body: JSON.stringify({
+           
+            email: email.current.value,
+            password: password.current.value,
+          }),
+        });
+        
+        const res = await https_post.json();
+        console.log(res)
+        seterrorMessage(res.msg)
+        nav("/")
+              
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
        
-    //    let checkValidInfoData =  CheckValidateData(email.current.value,password.current.value);
-    let checkValidInfoData = ""
-    seterrorMessage(checkValidInfoData);
-    
-    if(CheckValidateData) return;
-    
-    
-    if(!isSignInForm){
-    
-    
-    }
-    else {
-     
-    
-    }
-    
-    
+   
     
     }
     
@@ -52,6 +86,7 @@ export default function SignIn() {
 
         {!isSignInForm&&(<input
           type="text"
+          ref = {name}
           placeholder="Full Name"
           className="p-2 my-2 w-full bg-gray-800"
           name=""

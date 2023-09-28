@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import "./deal.css";
 import { Select,Drawer,DrawerBody,DrawerFooter,DrawerHeader
@@ -13,16 +13,17 @@ import { Button } from "@chakra-ui/react";
 import deals_data from "./deal.json"
 import { useDispatch, useSelector } from "react-redux";
 import { AddProduct, RemoveProduct } from "../store/ProductSlice";
-
+let cabels  = deals_data.cables;
+    let watch = deals_data.watch
 export default function Deals() {
+  const [selectedOption, setSelectedOption] = useState('');
     const [open, setOpen] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = React.useRef();
-    let cabels  = deals_data.cables;
-    let watch = deals_data.watch
+    
     const select = useSelector((state) => state.ProductSlice);
     const dispatch = useDispatch();
-   
+   const [count,setcount] = useState(0)
   const HandleAddToCart = (id, name, poster, price, qty) => {
     const existingProduct = select.find(product => product.id === id);
 
@@ -72,6 +73,68 @@ if(select.length>=1){
   },0)
   console.log(total_amount)
 }
+
+
+const handleSelectChange = (e) => {
+  
+  const selectedValue = e.target.value;
+  
+
+  setSelectedOption(selectedValue);
+
+if(selectedOption[16]==="w"){
+  for(var i = 0;i<cabels.length;i++){
+    for(var j = 0; j<cabels.length-i-1; j++){
+      if(cabels[j].price<cabels[j+1].price){
+        var temp = cabels[j];
+        cabels[j]  = cabels[j+1];
+        cabels[j+1] = temp
+      }
+    }
+  }
+
+  for(var i = 0;i<watch.length;i++){
+    for(var j = 0; j<watch.length-i-1; j++){
+      if(watch[j].price<watch[j+1].price){
+        var temp = watch[j];
+        watch[j]  = watch[j+1];
+        watch[j+1] = temp
+      }
+    }
+  }
+  console.log(watch,cabels)
+setcount((count)=>count+1)
+}
+else if(selectedOption === "Price,low to high"){
+  for(var i = 0;i<cabels.length;i++){
+    for(var j = 0; j<cabels.length-i-1; j++){
+      if(cabels[j].price>cabels[j+1].price){
+        var temp = cabels[j];
+        cabels[j]  = cabels[j+1];
+        cabels[j+1] = temp
+      }
+    }
+  }
+
+  for(var i = 0;i<watch.length;i++){
+    for(var j = 0; j<watch.length-i-1; j++){
+      if(watch[j].price>watch[j+1].price){
+        var temp = watch[j];
+        watch[j]  = watch[j+1];
+        watch[j+1] = temp
+      }
+    }
+  }
+  console.log(watch,cabels)
+
+  setcount((count)=>count+1)
+
+
+}
+};
+useEffect(()=>{
+
+},[count])
 
   return (
     <>
@@ -124,12 +187,15 @@ if(select.length>=1){
 <Button size={"md"} width={150}>
   Filter {">"}
 </Button>
-<Select color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily={"inherit"} size = {"md"} width={"44"} placeholder='Sort By: Featured'>
+<Select
+ value={selectedOption} 
+ onChange={handleSelectChange} 
+color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily={"inherit"} size = {"md"} width={"44"} placeholder='Sort By: Featured'>
   <option value='New Arrivals'>New Arrivals</option>
   <option value='Best Selling'>Best Selling</option>
 
-  <option value='Price,high to low'>Price,high to low</option>
-  <option value='Price,low to high'>Price,low to high</option>
+  <option value='Price,low to high'>Price,high to low</option>
+  <option value='Price,high to low'>Price,low to high</option>
 </Select>
 </div>
 
