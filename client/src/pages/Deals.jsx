@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { Header } from "../components/Header";
 import "./deal.css";
 import { Select,Drawer,DrawerBody,DrawerFooter,DrawerHeader
@@ -8,6 +8,7 @@ DrawerCloseButton,
 useDisclosure,
 Divider,
 } from '@chakra-ui/react'
+import {LuListFilter} from "react-icons/lu"
 import { DealsCart } from "../components/DealsCart";
 import { Button } from "@chakra-ui/react";
 import deals_data from "./deal.json"
@@ -18,8 +19,13 @@ let cabels  = deals_data.cables;
 export default function Deals() {
   const [selectedOption, setSelectedOption] = useState('');
     const [open, setOpen] = useState(false);
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const btnRef = React.useRef();
+    const { isOpen:isopen_cart, onOpen:onopen_cart, onClose:onClose_cart } = useDisclosure();
+    const { isOpen:isOpenFilter, onOpen:onOpenFilter, onClose:onCloseFilter } = useDisclosure();
+
+    const btnRef = useRef();
+
+
+const btnRefFilter = useRef()
     
     const select = useSelector((state) => state.ProductSlice);
     const dispatch = useDispatch();
@@ -132,13 +138,15 @@ else if(selectedOption === "Price,low to high"){
 
 }
 };
+
+
 useEffect(()=>{
 
 },[count])
 
   return (
     <>
-      <Header BtnRef={btnRef} HitClick={onOpen} />
+      <Header BtnRef={btnRef} HitClick={onopen_cart} />
       <div style={{ paddingTop: "5rem" }}>
         <h3 className="font-bold text-2xl p-8 pl-24 pt-16 ">
           Daily Deals
@@ -163,16 +171,18 @@ useEffect(()=>{
           <div className="flashtimer">
             <h4 className="timer__title">Ending In:</h4>
             <div className="time-display">
-              <div className="timer-block" style={{ display: "none" }}>
+              <div className="timer-block" style={{ display: "block" }}>
                 <span className="">00</span>
               </div>
 
-              <div className="timer-block" style={{ display: "none" }}>
+              <div className="timer-block" style={{ display: "block" }}>
                 <span className="">00</span>
               </div>
 
-              <div className="timer-block" style={{ display: "none" }}>
-                <span className="">00</span>
+              <div className="timer-block" style={{ display: "block" }}>
+                <span className="">
+                 00
+                </span>
               </div>
 
               <div className="timer-block milliseconds">
@@ -184,7 +194,7 @@ useEffect(()=>{
 
 
 <div className="flex justify-between pr-5 pl-5 mt-8">
-<Button size={"md"} width={150}>
+<Button onClick={onOpenFilter} ref={btnRefFilter} fontWeight={"semibold"} size={"md"} width={150}>
   Filter {">"}
 </Button>
 <Select
@@ -215,9 +225,9 @@ color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily
 
 
       <Drawer
-        isOpen={isOpen}
+        isOpen={isopen_cart}
         placement="right"
-        onClose={onClose}
+        onClose={onClose_cart}
         finalFocusRef={btnRef}
         size="sm"
       >
@@ -378,6 +388,105 @@ color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily
 <span className="text-xl to-blue-950 text-blue-900 font-bold uppercase pr-5">Subtotal :</span> <span className="font-semibold text-xl text-blue-800">
 ₹ {total_amount}
 </span>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+
+
+
+      
+      <Drawer
+        isOpen={isOpenFilter}
+        placement='left'
+        onClose={onCloseFilter}
+        finalFocusRef={btnRefFilter}
+        size="sm"
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader className="font-boldbold flex justify-start place-content-center text-center align-middle">
+         <span className="pt-1">
+         <LuListFilter size={24} />
+          </span> <span className="pl-1">Filter By</span>
+          
+          </DrawerHeader>
+          <Divider/>
+          <DrawerBody>
+      <div className="flex justify-between">
+        <span>
+        <ul>
+        <li className="font-semibold text-lg mb-5">Category</li>
+        <li
+        
+        className="font-semibold text-sm mb-5"
+        >Price</li>
+        <li
+        className="font-semibold text-sm mb-5"
+        >
+          Color
+        </li>
+
+        <li
+        className="font-semibold text-sm mb-5"
+        >
+          Display
+        </li>
+        <li
+        className="font-semibold text-sm mb-5"
+        >
+          Feature
+        </li>
+        <li
+        className="font-semibold text-sm mb-5"
+        >
+         Best Offer
+        </li>
+     
+    </ul>
+        </span>
+
+        <span className="pt-12">
+        <ul>
+        <li className="font-semibold text-sm mb-5">
+          <Button
+          size={"sm"}
+          >Cables</Button>
+        </li>
+        <li
+        
+        className="font-semibold text-sm mb-5"
+        >
+          <Button
+          size={"sm"}
+          >Watch</Button>
+
+        </li>
+        <li
+        className="font-semibold text-sm mb-5"
+        >
+          <Button
+          size={"sm"}
+          >Earbuds</Button>
+        
+        </li>
+
+      
+     
+    </ul>
+        </span>
+      </div>
+
+
+
+          
+          </DrawerBody>
+
+          <DrawerFooter className="">
+            <Button width={200} variant='solid' mr={3} onClick={onCloseFilter}>
+             Filter
+            </Button>
+            <Button width={210} colorScheme='blackAlpha'>Apply</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

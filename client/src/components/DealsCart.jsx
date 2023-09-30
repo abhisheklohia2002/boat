@@ -47,8 +47,8 @@ export const DealsCart = ({
   return (
     <div key = {id}  className='rounded-xl m-3' style={{background:"#eff4f7",border:"2px solid lightgray"}}>
 <div className='flex justify-around align-middle  pt-0 pb-0 pl-10' >
-    <p className='pt-10'>
-    <img className='' src={poster} alt={name} />
+    <p className='pt-5 rounded-md'>
+    <img  className='rounded-lg' src={poster} alt={name} />
 
     </p>
     <h3 className='pt-5  pl-10 font-bold'>
