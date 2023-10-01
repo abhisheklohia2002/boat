@@ -150,7 +150,7 @@ export default function Deals() {
   const HandleProducts = async (products) => {
     try {
       const products_res = await fetch(
-        `http://localhost:5000/api/products`,
+        `https://boat-lilac.vercel.app/api/products`,
         {
           method: "POST",
           headers: {
