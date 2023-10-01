@@ -17,6 +17,7 @@ import {
   Button,
   Input,
   Divider,
+  Box,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AddProduct, RemoveProduct } from "../store/ProductSlice";
@@ -513,9 +514,14 @@ if(existingProduct){
             )}
           </DrawerBody>
           <DrawerFooter>
-          <span className="text-xl to-blue-950 text-blue-900 font-bold uppercase pr-5">Subtotal :</span> <span className="font-semibold text-xl text-blue-800">
-₹ {total_amount}
-</span>
+          <div className="flex">
+           <Box className="text-xl  text-black-900 font-bold uppercase pr-5">
+              Subtotal :
+            </Box>{" "}
+            <Box className="font-semibold text-xl text-black-800">
+              ₹ {total_amount}
+            </Box>
+           </div>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

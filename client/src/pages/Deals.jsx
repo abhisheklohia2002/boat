@@ -1,42 +1,55 @@
-import React, { useEffect, useState ,useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Header } from "../components/Header";
 import "./deal.css";
-import { Select,Drawer,DrawerBody,DrawerFooter,DrawerHeader
-,  DrawerOverlay,
-DrawerContent,
-DrawerCloseButton,
-useDisclosure,
-Divider,
-} from '@chakra-ui/react'
-import {LuListFilter} from "react-icons/lu"
+import {
+  Select,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Divider,
+  Box,
+} from "@chakra-ui/react";
+import { LuListFilter } from "react-icons/lu";
 import { DealsCart } from "../components/DealsCart";
 import { Button } from "@chakra-ui/react";
-import deals_data from "./deal.json"
+import deals_data from "./deal.json";
 import { useDispatch, useSelector } from "react-redux";
 import { AddProduct, RemoveProduct } from "../store/ProductSlice";
-let cabels  = deals_data.cables;
-    let watch = deals_data.watch
+let cabels = deals_data.cables;
+let watch = deals_data.watch;
 export default function Deals() {
-  const [selectedOption, setSelectedOption] = useState('');
-    const [open, setOpen] = useState(false);
-    const { isOpen:isopen_cart, onOpen:onopen_cart, onClose:onClose_cart } = useDisclosure();
-    const { isOpen:isOpenFilter, onOpen:onOpenFilter, onClose:onCloseFilter } = useDisclosure();
+  const [selectedOption, setSelectedOption] = useState("");
+  const [open, setOpen] = useState("");
+  const {
+    isOpen: isopen_cart,
+    onOpen: onopen_cart,
+    onClose: onClose_cart,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenFilter,
+    onOpen: onOpenFilter,
+    onClose: onCloseFilter,
+  } = useDisclosure();
 
-    const btnRef = useRef();
+  const btnRef = useRef();
 
+  const btnRefFilter = useRef();
 
-const btnRefFilter = useRef()
-    
-    const select = useSelector((state) => state.ProductSlice);
-    const dispatch = useDispatch();
-   const [count,setcount] = useState(0)
+  const select = useSelector((state) => state.ProductSlice);
+  const dispatch = useDispatch();
+  const [count, setcount] = useState(0);
   const HandleAddToCart = (id, name, poster, price, qty) => {
-    const existingProduct = select.find(product => product.id === id);
+    const existingProduct = select.find((product) => product.id === id);
 
     if (existingProduct) {
       const updatedQty = existingProduct.qty + qty;
-      const payload = {id, name, poster, price, qty:updatedQty}
-      dispatch(RemoveProduct(payload))
+      const payload = { id, name, poster, price, qty: updatedQty };
+      dispatch(RemoveProduct(payload));
 
       dispatch(AddProduct(payload));
       console.log(select);
@@ -46,111 +59,134 @@ const btnRefFilter = useRef()
         name,
         poster,
         price,
-        qty
+        qty,
       };
       dispatch(AddProduct(payload));
       console.log(select);
     }
-  
   };
 
   const HandleRemove = (id) => {
-    const existingProduct = select.find(product => product.id === id);
-if(existingProduct){
-  if(existingProduct.qty > 1){
-    const updatedQty = existingProduct.qty - 1;
-    const payload = {id,name:existingProduct.name,poster:existingProduct.poster,price:existingProduct.price,qty:updatedQty};
-    dispatch(RemoveProduct(payload));
-    dispatch(AddProduct(payload))
-
-  }
-  else {
-    const payload = { id };
-    dispatch(RemoveProduct(payload));
-    console.log(select);
-  }
-}
-  
+    const existingProduct = select.find((product) => product.id === id);
+    if (existingProduct) {
+      if (existingProduct.qty > 1) {
+        const updatedQty = existingProduct.qty - 1;
+        const payload = {
+          id,
+          name: existingProduct.name,
+          poster: existingProduct.poster,
+          price: existingProduct.price,
+          qty: updatedQty,
+        };
+        dispatch(RemoveProduct(payload));
+        dispatch(AddProduct(payload));
+      } else {
+        const payload = { id };
+        dispatch(RemoveProduct(payload));
+        console.log(select);
+      }
+    }
   };
-let total_amount;
-if(select.length>=1){
-  total_amount = select.reduce((acc,product)=>{
- return acc + (product.price*product.qty);
-  },0)
-  console.log(total_amount)
-}
+  let total_amount;
+  if (select.length >= 1) {
+    total_amount = select.reduce((acc, product) => {
+      return acc + product.price * product.qty;
+    }, 0);
+    console.log(total_amount);
+  }
 
+  const handleSelectChange = (e) => {
+    const selectedValue = e.target.value;
 
-const handleSelectChange = (e) => {
+    setSelectedOption(selectedValue);
+
+    if (selectedOption[16] === "w") {
+      for (var i = 0; i < cabels.length; i++) {
+        for (var j = 0; j < cabels.length - i - 1; j++) {
+          if (cabels[j].price < cabels[j + 1].price) {
+            var temp = cabels[j];
+            cabels[j] = cabels[j + 1];
+            cabels[j + 1] = temp;
+          }
+        }
+      }
+
+      for (var i = 0; i < watch.length; i++) {
+        for (var j = 0; j < watch.length - i - 1; j++) {
+          if (watch[j].price < watch[j + 1].price) {
+            var temp = watch[j];
+            watch[j] = watch[j + 1];
+            watch[j + 1] = temp;
+          }
+        }
+      }
+      console.log(watch, cabels);
+      setcount((count) => count + 1);
+    } else if (selectedOption === "Price,low to high") {
+      for (var i = 0; i < cabels.length; i++) {
+        for (var j = 0; j < cabels.length - i - 1; j++) {
+          if (cabels[j].price > cabels[j + 1].price) {
+            var temp = cabels[j];
+            cabels[j] = cabels[j + 1];
+            cabels[j + 1] = temp;
+          }
+        }
+      }
+
+      for (var i = 0; i < watch.length; i++) {
+        for (var j = 0; j < watch.length - i - 1; j++) {
+          if (watch[j].price > watch[j + 1].price) {
+            var temp = watch[j];
+            watch[j] = watch[j + 1];
+            watch[j + 1] = temp;
+          }
+        }
+      }
+      console.log(watch, cabels);
+
+      setcount((count) => count + 1);
+    }
+  };
+  const HandleProducts = async (products) => {
+    try {
+      const products_res = await fetch(
+        `http://localhost:5000/api/products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Corrected "applications" to "application"
+          },
+          body: JSON.stringify({
+            cabels: products,
+          }),
+        }
+      );
+      const res = await products_res.json();
+      if(res.msg){
+        setOpen("none")
+    //  cabels = ""
+    //  watch = ""
+    cabels = res.msg
+   
+    setcount((count)=>count+1)
+   }
+   else {
+
+   }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
-  const selectedValue = e.target.value;
-  
 
-  setSelectedOption(selectedValue);
-
-if(selectedOption[16]==="w"){
-  for(var i = 0;i<cabels.length;i++){
-    for(var j = 0; j<cabels.length-i-1; j++){
-      if(cabels[j].price<cabels[j+1].price){
-        var temp = cabels[j];
-        cabels[j]  = cabels[j+1];
-        cabels[j+1] = temp
-      }
-    }
-  }
-
-  for(var i = 0;i<watch.length;i++){
-    for(var j = 0; j<watch.length-i-1; j++){
-      if(watch[j].price<watch[j+1].price){
-        var temp = watch[j];
-        watch[j]  = watch[j+1];
-        watch[j+1] = temp
-      }
-    }
-  }
-  console.log(watch,cabels)
-setcount((count)=>count+1)
-}
-else if(selectedOption === "Price,low to high"){
-  for(var i = 0;i<cabels.length;i++){
-    for(var j = 0; j<cabels.length-i-1; j++){
-      if(cabels[j].price>cabels[j+1].price){
-        var temp = cabels[j];
-        cabels[j]  = cabels[j+1];
-        cabels[j+1] = temp
-      }
-    }
-  }
-
-  for(var i = 0;i<watch.length;i++){
-    for(var j = 0; j<watch.length-i-1; j++){
-      if(watch[j].price>watch[j+1].price){
-        var temp = watch[j];
-        watch[j]  = watch[j+1];
-        watch[j+1] = temp
-      }
-    }
-  }
-  console.log(watch,cabels)
-
-  setcount((count)=>count+1)
-
-
-}
-};
-
-
-useEffect(()=>{
-
-},[count])
+  useEffect(() => {}, [count]);
 
   return (
     <>
       <Header BtnRef={btnRef} HitClick={onopen_cart} />
       <div style={{ paddingTop: "5rem" }}>
-        <h3 className="font-bold text-2xl p-8 pl-24 pt-16 ">
-          Daily Deals
-        </h3>
+        <h3 className="font-bold text-2xl p-8 pl-24 pt-16 ">Daily Deals</h3>
 
         <div className="flash_sale">
           <p className="m-0 uppercase flash_text ">
@@ -180,9 +216,7 @@ useEffect(()=>{
               </div>
 
               <div className="timer-block" style={{ display: "block" }}>
-                <span className="">
-                 00
-                </span>
+                <span className="">00</span>
               </div>
 
               <div className="timer-block milliseconds">
@@ -192,37 +226,59 @@ useEffect(()=>{
           </div>
         </div>
 
+        <div className="flex justify-between pr-5 pl-5 mt-8">
+          <Button
+            onClick={onOpenFilter}
+            ref={btnRefFilter}
+            fontWeight={"semibold"}
+            size={"md"}
+            width={150}
+          >
+            Filter {">"}
+          </Button>
+          <Select
+            value={selectedOption}
+            onChange={handleSelectChange}
+            color={"ActiveBorder"}
+            fontWeight={"semibold"}
+            background={"#eff4f7"}
+            fontFamily={"inherit"}
+            size={"md"}
+            width={"44"}
+            placeholder="Sort By: Featured"
+          >
+            <option value="New Arrivals">New Arrivals</option>
+            <option value="Best Selling">Best Selling</option>
 
-<div className="flex justify-between pr-5 pl-5 mt-8">
-<Button onClick={onOpenFilter} ref={btnRefFilter} fontWeight={"semibold"} size={"md"} width={150}>
-  Filter {">"}
-</Button>
-<Select
- value={selectedOption} 
- onChange={handleSelectChange} 
-color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily={"inherit"} size = {"md"} width={"44"} placeholder='Sort By: Featured'>
-  <option value='New Arrivals'>New Arrivals</option>
-  <option value='Best Selling'>Best Selling</option>
+            <option value="Price,low to high">Price,high to low</option>
+            <option value="Price,high to low">Price,low to high</option>
+          </Select>
+        </div>
 
-  <option value='Price,low to high'>Price,high to low</option>
-  <option value='Price,high to low'>Price,low to high</option>
-</Select>
-</div>
+        <div className="grid grid-cols-3">
+          {cabels?.map((e, i) => (
+            <DealsCart
+              key={i}
+              id={e.id}
+              name={e.name}
+              poster={e.poster}
+              price={e.price}
+            />
+          ))}
+        </div>
 
-
-<div className="grid grid-cols-3">
- {
-  cabels?.map((e,i)=> <DealsCart key  = {i} id = {e.id} name = {e.name} poster = {e.poster} price = {e.price} />)
- }
-</div>
-
-<div className="grid grid-cols-3">
- {
-  watch?.map((e,i)=> <DealsCart key  = {i} id = {e.id} name = {e.name} poster = {e.poster} price = {e.price} />)
- }
-</div>
+        <div style={{display:open}} className="grid grid-cols-3">
+          {watch?.map((e, i) => (
+            <DealsCart
+              key={i}
+              id={e.id}
+              name={e.name}
+              poster={e.poster}
+              price={e.price}
+            />
+          ))}
+        </div>
       </div>
-
 
       <Drawer
         isOpen={isopen_cart}
@@ -234,52 +290,60 @@ color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader
-          className="font-bold uppercase"
-          >Your Cart
-          <Divider/>
+          <DrawerHeader className="font-bold uppercase">
+            Your Cart
+            <Divider />
           </DrawerHeader>
 
           <DrawerBody>
             {select.length !== 0 ? (
-         <div className="overflow-auto">
-          {
-            select?.map((e,i)=>(
-              <div className="flex justify-evenly place-content-center align-middle mb-3">
-              <div><img className="w-24 rounded-md" src={e.poster} alt={e.name} /></div>
-              <div className="pt-5 text-center">
-                <span className="font-semibold uppercase text-sm">
-                  {e.name}
-                </span>
-                
-                <br />
-               
+              <div className="overflow-auto">
+                {select?.map((e, i) => (
+                  <div className="flex justify-evenly place-content-center align-middle mb-3">
+                    <div>
+                      <img
+                        className="w-24 rounded-md"
+                        src={e.poster}
+                        alt={e.name}
+                      />
+                    </div>
+                    <div className="pt-5 text-center">
+                      <span className="font-semibold uppercase text-sm">
+                        {e.name}
+                      </span>
 
-                <span className="font-extralight">
-                ₹ {e.price * e.qty }
-                </span>
-                <br />
-                <Button background={"InactiveCaption"} size={"sm"} className="rounded-md">
-                  Better Sound 
-                </Button>
+                      <br />
+
+                      <span className="font-extralight">
+                        ₹ {e.price * e.qty}
+                      </span>
+                      <br />
+                      <Button
+                        background={"InactiveCaption"}
+                        size={"sm"}
+                        className="rounded-md"
+                      >
+                        Better Sound
+                      </Button>
+                    </div>
+                    <div className="flex justify-center align-middle pt-8">
+                      <Button onClick={() => HandleRemove(e.id)} size={"sm"}>
+                        -
+                      </Button>
+                      <span className="p-1">{e.qty}</span>
+                      <Button
+                        onClick={() =>
+                          HandleAddToCart(e.id, e.name, e.poster, e.price, 1)
+                        }
+                        size={"sm"}
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                <Divider />
               </div>
-              <div className="flex justify-center align-middle pt-8">
-                <Button onClick={()=>HandleRemove(e.id)} size={"sm"}>
-                  -
-                </Button>
-                <span className="p-1">
-                 {e.qty}
-                </span>
-                <Button onClick={()=>HandleAddToCart(e.id,e.name,e.poster,e.price,1)} size={"sm"}>
-                  +
-                </Button>
-              </div>
-             
-            </div>
-            ))
-          }
-<Divider/>
-         </div>
             ) : (
               <div className="pl-32 text-left pt-40 pr-10">
                 <svg
@@ -371,7 +435,10 @@ color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily
                   </g>
                 </svg>
 
-                <h3 style={{}} className="font-bold w-80 pt-5 text-xl relative right-10">
+                <h3
+                  style={{}}
+                  className="font-bold w-80 pt-5 text-xl relative right-10"
+                >
                   Your Cart is feeling lonely
                 </h3>
                 <Button
@@ -384,20 +451,22 @@ color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily
               </div>
             )}
           </DrawerBody>
-          <DrawerFooter >
-<span className="text-xl to-blue-950 text-blue-900 font-bold uppercase pr-5">Subtotal :</span> <span className="font-semibold text-xl text-blue-800">
-₹ {total_amount}
-</span>
+          <DrawerFooter>
+           <div className="flex">
+           <Box className="text-xl  text-black-900 font-bold uppercase pr-5">
+              Subtotal :
+            </Box>{" "}
+            <Box className="font-semibold text-xl text-black-800">
+              ₹ {total_amount}
+            </Box>
+           </div>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
 
-
-
-      
       <Drawer
         isOpen={isOpenFilter}
-        placement='left'
+        placement="left"
         onClose={onCloseFilter}
         finalFocusRef={btnRefFilter}
         size="sm"
@@ -406,87 +475,61 @@ color={"ActiveBorder"} fontWeight={"semibold"} background={"#eff4f7"} fontFamily
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader className="font-boldbold flex justify-start place-content-center text-center align-middle">
-         <span className="pt-1">
-         <LuListFilter size={24} />
-          </span> <span className="pl-1">Filter By</span>
-          
+            <span className="pt-1">
+              <LuListFilter size={24} />
+            </span>{" "}
+            <span className="pl-1">Filter By</span>
           </DrawerHeader>
-          <Divider/>
+          <Divider />
           <DrawerBody>
-      <div className="flex justify-between">
-        <span>
-        <ul>
-        <li className="font-semibold text-lg mb-5">Category</li>
-        <li
-        
-        className="font-semibold text-sm mb-5"
-        >Price</li>
-        <li
-        className="font-semibold text-sm mb-5"
-        >
-          Color
-        </li>
+            <div className="flex justify-between">
+              <span>
+                <ul>
+                  <li className="font-semibold text-lg mb-5">Category</li>
+                  <li className="font-semibold text-sm mb-5">Price</li>
+                  <li className="font-semibold text-sm mb-5">Color</li>
 
-        <li
-        className="font-semibold text-sm mb-5"
-        >
-          Display
-        </li>
-        <li
-        className="font-semibold text-sm mb-5"
-        >
-          Feature
-        </li>
-        <li
-        className="font-semibold text-sm mb-5"
-        >
-         Best Offer
-        </li>
-     
-    </ul>
-        </span>
+                  <li className="font-semibold text-sm mb-5">Display</li>
+                  <li className="font-semibold text-sm mb-5">Feature</li>
+                  <li className="font-semibold text-sm mb-5">Best Offer</li>
+                </ul>
+              </span>
 
-        <span className="pt-12">
-        <ul>
-        <li className="font-semibold text-sm mb-5">
-          <Button
-          size={"sm"}
-          >Cables</Button>
-        </li>
-        <li
-        
-        className="font-semibold text-sm mb-5"
-        >
-          <Button
-          size={"sm"}
-          >Watch</Button>
-
-        </li>
-        <li
-        className="font-semibold text-sm mb-5"
-        >
-          <Button
-          size={"sm"}
-          >Earbuds</Button>
-        
-        </li>
-
-      
-     
-    </ul>
-        </span>
-      </div>
-
-
-
-          
+              <span className="pt-12">
+                <ul>
+                  <li className="font-semibold text-sm mb-5">
+                    <Button
+                      onClick={() => HandleProducts("game")}
+                      size={"sm"}
+                    >
+                    Gaming Earbuds
+                    </Button>
+                  </li>
+                  <li className="font-semibold text-sm mb-5">
+                    <Button onClick={() => HandleProducts("watch")} size={"sm"}>
+                      Watch
+                    </Button>
+                  </li>
+                  <li className="font-semibold text-sm mb-5">
+                    <Button
+                      onClick={() => HandleProducts("earbuds")}
+                      size={"sm"}
+                    >
+                      Earbuds
+                    </Button>
+                  </li>
+                </ul>
+              </span>
+            </div>
           </DrawerBody>
 
           <DrawerFooter className="">
-            <Button width={200} variant='solid' mr={3} onClick={onCloseFilter}>
-             Filter
+            <Button width={200} variant="solid" mr={3} onClick={onCloseFilter}>
+              Filter
             </Button>
-            <Button width={210} colorScheme='blackAlpha'>Apply</Button>
+            <Button width={210} colorScheme="blackAlpha">
+              Apply
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
