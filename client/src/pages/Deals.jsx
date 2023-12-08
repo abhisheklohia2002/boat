@@ -20,6 +20,7 @@ import { Button } from "@chakra-ui/react";
 import deals_data from "./deal.json";
 import { useDispatch, useSelector } from "react-redux";
 import { AddProduct, RemoveProduct } from "../store/ProductSlice";
+import LargeWithNewsletter from "../components/Footer";
 let cabels = deals_data.cables;
 let watch = deals_data.watch;
 export default function Deals() {
@@ -533,6 +534,7 @@ export default function Deals() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+      <LargeWithNewsletter/>
     </>
   );
 }

@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AddProduct, RemoveProduct } from "../store/ProductSlice";
+import LargeWithNewsletter from "../components/Footer";
 
 let image_silder = [
   "https://www.boat-lifestyle.com/cdn/shop/files/Avengers_Web_5df16c6a-1005-4bc9-9c7d-aa18f71023c1_1440x.jpg?v=1695624588",
@@ -525,6 +526,7 @@ if(existingProduct){
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+      <LargeWithNewsletter/>
     </>
   );
 }
